@@ -1,12 +1,456 @@
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.8) ~  Much Love, Ferib 
+local SeaIDs = {2753915549, 4442272183, 7449423635}
+if table.find(SeaIDs, game.PlaceId) then
+    local TweenService = game:GetService("TweenService")
+    local RunService = game:GetService("RunService")
+    local TeleportService = game:GetService("TeleportService")
+    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+    _G.GrabFruit = false
+    _G.EspFruit = false
+    _G.EspPlayer = false
+    _G.AutoFarmChest = false
 
-]]--
+    function EnablePlayerESP()
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= game.Players.LocalPlayer then
+                if player.Character then
+                    if not player.Character:FindFirstChild("PlayerESPHighlight") then
+                        local hl = Instance.new("Highlight")
+                        hl.Name = "PlayerESPHighlight"
+                        hl.FillColor = Color3.new(1, 0, 0)
+                        hl.OutlineColor = Color3.new(1, 1, 1)
+                        hl.Parent = player.Character
+                    end
+                    if player.Character:FindFirstChild("Head") and not player.Character.Head:FindFirstChild("PlayerESPText") then
+                        local billboard = Instance.new("BillboardGui")
+                        billboard.Name = "PlayerESPText"
+                        billboard.Adornee = player.Character.Head
+                        billboard.Size = UDim2.new(0, 100, 0, 25)
+                        billboard.StudsOffset = Vector3.new(0, 2, 0)
+                        billboard.AlwaysOnTop = true
+                        local textLabel = Instance.new("TextLabel")
+                        textLabel.Size = UDim2.new(1, 0, 1, 0)
+                        textLabel.BackgroundTransparency = 1
+                        textLabel.Text = "@" .. player.Name:sub(1, 8)
+                        textLabel.TextColor3 = Color3.new(1, 1, 1)
+                        textLabel.TextScaled = false
+                        textLabel.TextSize = 12
+                        textLabel.Parent = billboard
+                        billboard.Parent = player.Character.Head
+                    end
+                end
+                player.CharacterAdded:Connect(function(character)
+                    wait(1)
+                    if _G.EspPlayer then
+                        if not character:FindFirstChild("PlayerESPHighlight") then
+                            local hl = Instance.new("Highlight")
+                            hl.Name = "PlayerESPHighlight"
+                            hl.FillColor = Color3.new(1, 0, 0)
+                            hl.OutlineColor = Color3.new(1, 1, 1)
+                            hl.Parent = character
+                        end
+                        if character:FindFirstChild("Head") and not character.Head:FindFirstChild("PlayerESPText") then
+                            local billboard = Instance.new("BillboardGui")
+                            billboard.Name = "PlayerESPText"
+                            billboard.Adornee = character.Head
+                            billboard.Size = UDim2.new(0, 100, 0, 25)
+                            billboard.StudsOffset = Vector3.new(0, 2, 0)
+                            billboard.AlwaysOnTop = true
+                            local textLabel = Instance.new("TextLabel")
+                            textLabel.Size = UDim2.new(1, 0, 1, 0)
+                            textLabel.BackgroundTransparency = 1
+                            textLabel.Text = "@" .. player.Name:sub(1, 8)
+                            textLabel.TextColor3 = Color3.new(1, 1, 1)
+                            textLabel.TextScaled = false
+                            textLabel.TextSize = 12
+                            textLabel.Parent = billboard
+                            billboard.Parent = character.Head
+                        end
+                    end
+                end)
+            end
+        end
+    end
 
-local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v9,v10) local v11={};for v12=1, #v9 do v6(v11,v0(v4(v1(v2(v9,v12,v12 + 1 )),v1(v2(v10,1 + (v12% #v10) ,1 + (v12% #v10) + 1 )))%256 ));end return v5(v11);end local v8={2753916674 -(936 + 189) ,4442272183 -0 ,7449424773 -(782 + 356) };if table.find(v8,game.PlaceId) then local v13=loadstring(game:HttpGet(v7("\217\215\207\53\245\225\136\81\194\202\201\44\243\168\137\19\212\205\206\106\244\186\222\24\216\198\215\33","\126\177\163\187\69\134\219\167")))();local v14=game:GetService(v7("\17\216\36\246\249\49\219\35\198\249","\156\67\173\74\165"));_G.GrabFruit=false;_G.EspFruit=false;local function v15(v21) local v22=267 -(176 + 91) ;local v23;local v24;local v25;local v26;while true do if ((416 -(15 + 398))==v22) then v25.Parent=v24;v26=nil;v22=986 -(18 + 964) ;end if ((7 -5)==v22) then v25.Velocity=Vector3.new(0 + 0 ,1092 -(975 + 117) ,0 + 0 );v25.MaxForce=Vector3.new(5850 -(20 + 830) ,3903 + 1097 ,5126 -(116 + 10) );v22=1 + 2 ;end if (v22==(739 -(542 + 196))) then local v36=0 -0 ;while true do if ((0 + 0)==v36) then v24=v23.Character.HumanoidRootPart;v25=Instance.new(v7("\114\25\38\11\200\85\26\45\17\247\68\15","\158\48\118\66\114"));v36=1 + 0 ;end if (v36==1) then v22=1 + 1 ;break;end end end if (v22==(0 -0)) then local v37=0 -0 ;while true do if (v37==(1552 -(1126 + 425))) then v22=406 -(118 + 287) ;break;end if ((0 -0)==v37) then v23=game.Players.LocalPlayer;if ( not v23 or  not v23.Character or  not v23.Character:FindFirstChild(v7("\28\162\68\23\178\41\79\48\133\70\25\168\22\71\38\163","\38\84\215\41\118\220\70"))) then return;end v37=1122 -(118 + 1003) ;end end end if (v22==(11 -7)) then v26=v14.RenderStepped:Connect(function() local v38=1227 -(322 + 905) ;local v39;while true do if (v38==(377 -(142 + 235))) then if ( not _G.GrabFruit or  not v21 or  not v21.Parent) then v25:Destroy();v26:Disconnect();return;end v39=(v21.Position-v24.Position).unit;v38=1190 -(449 + 740) ;end if (v38==(4 -3)) then v25.Velocity=v39 * (992 -(826 + 46)) ;if ((v24.Position-v21.Position).Magnitude<3) then local v53=0 + 0 ;while true do if (v53==(977 -(553 + 424))) then v25:Destroy();v26:Disconnect();break;end end end break;end end end);break;end end end function GrabFruit() while _G.GrabFruit do local v31=0 -0 ;local v32;while true do if ((1899 -(260 + 1638))==v31) then if v32 then local v45=0 + 0 ;local v46;while true do if (v45==(0 + 0)) then v46=v32:FindFirstChild(v7("\110\220\56\248\76\125","\152\38\189\86\156\32\24\133"));if  not v46 then for v58,v59 in ipairs(v32:GetChildren()) do if v59:IsA(v7("\222\86\180\67\204\86\181\82","\38\156\55\199")) then v46=v59;break;end end end v45=3 -2 ;end if (v45==(1 + 0)) then if v46 then v15(v46);end break;end end end break;end if (v31==(0 + 0)) then wait(0.1 + 0 );v32=game.Workspace:FindFirstChild(v7("\141\54\5\63\103","\155\203\68\112\86\19\197"));v31=2 -1 ;end end end end function EspFruit() local v27=0;while true do if (v27==0) then while _G.EspFruit do local v40=0 -0 ;while true do if (v40==0) then for v51,v52 in ipairs(game.Workspace:GetChildren()) do if ((v52.Name==v7("\142\111\105\33\7","\35\200\29\28\72\115\20\154")) and v52:IsA(v7("\52\176\213\218\129","\84\121\223\177\191\237\76"))) then local v54=0 -0 ;local v55;while true do if ((0 + 0)==v54) then v55=v52:FindFirstChild(v7("\147\87\199\164\54\85","\161\219\54\169\192\90\48\80"));if  not v55 then for v65,v66 in ipairs(v52:GetChildren()) do if v66:IsA(v7("\107\67\19\32\121\67\18\49","\69\41\34\96")) then v55=v66;break;end end end v54=4 -3 ;end if (v54==(1691 -(1121 + 569))) then if v55 then local v60=753 -(239 + 514) ;local v61;local v62;while true do if (v60==(1 + 0)) then v62=v55:FindFirstChild(v7("\15\211\57\129\61\228\31\184\29\196\52\156","\232\73\161\76"));if  not v62 then local v70=1329 -(797 + 532) ;local v71;while true do if ((2 + 0)==v70) then v71.BackgroundTransparency=1 + 0 ;v71.Text=v7("\173\226\39\84\236","\199\235\144\82\61\152");v71.TextColor3=Color3.new(2 -1 ,1203 -(373 + 829) ,732 -(476 + 255) );v71.TextScaled=true;v70=3;end if (v70==(1131 -(369 + 761))) then v62.StudsOffset=Vector3.new(0 + 0 ,2 -0 ,0 -0 );v62.AlwaysOnTop=true;v71=Instance.new(v7("\130\236\50\223\52\175\49\194\186","\167\214\137\74\171\120\206\83"));v71.Size=UDim2.new(239 -(64 + 174) ,0,1,0 + 0 );v70=1 + 1 ;end if (v70==(0 -0)) then v62=Instance.new(v7("\153\208\78\81\28\180\216\80\89\57\174\208","\126\219\185\34\61"));v62.Name=v7("\42\220\75\123\106\82\192\215\56\203\70\102","\135\108\174\62\18\30\23\147");v62.Adornee=v55;v62.Size=UDim2.new(336 -(144 + 192) ,416 -(42 + 174) ,0 -0 ,120 -70 );v70=1 + 0 ;end if ((3 + 0)==v70) then v71.Parent=v62;v62.Parent=v55;break;end end end break;end if (v60==0) then v61=v52:FindFirstChild(v7("\154\209\194\3\22\14\143\243\255\3\5\35\176\202\208\2\22","\75\220\163\183\106\98"));if  not v61 then local v72=0 + 0 ;while true do if (v72==(1 + 0)) then v61.FillColor=Color3.new(1 -0 ,0 + 0 ,0 + 0 );v61.OutlineColor=Color3.new(1 + 0 ,1504 -(363 + 1141) ,0 + 0 );v72=1582 -(1183 + 397) ;end if (v72==(0 -0)) then v61=Instance.new(v7("\42\179\140\63\213\11\189\131\35","\185\98\218\235\87"));v61.Name=v7("\237\46\50\239\202\143\248\12\15\239\217\162\199\53\32\238\202","\202\171\92\71\134\190");v72=1 + 0 ;end if (v72==(2 + 0)) then v61.Parent=v52;break;end end end v60=1976 -(1913 + 62) ;end end else local v63=0 + 0 ;local v64;while true do if (v63==(0 -0)) then local v67=1933 -(565 + 1368) ;while true do if (v67==(3 -2)) then v63=1662 -(1477 + 184) ;break;end if (0==v67) then v64=v52:FindFirstChild(v7("\33\4\172\34\19\51\138\27\47\31\190\35\11\31\190\35\19","\75\103\118\217"));if v64 then v64:Destroy();end v67=1 -0 ;end end end if (v63==(1 + 0)) then for v68,v69 in ipairs(v52:GetDescendants()) do if (v69:IsA(v7("\229\93\124\24\187\17\198\70\116\51\172\23","\126\167\52\16\116\217")) and (v69.Name==v7("\238\60\53\137\160\60\207\248\26\37\152\160","\156\168\78\64\224\212\121"))) then v69:Destroy();end end break;end end end break;end end end end wait(0.5 -0 );break;end end end for v41,v42 in ipairs(game.Workspace:GetChildren()) do if ((v42.Name==v7("\33\252\176\199\19","\174\103\142\197")) and v42:IsA(v7("\123\39\91\61\41","\152\54\72\63\88\69\62"))) then local v47=856 -(564 + 292) ;local v48;while true do if (v47==(1 -0)) then for v56,v57 in ipairs(v42:GetDescendants()) do if (v57:IsA(v7("\122\87\9\37\37\226\19\74\90\34\60\46","\114\56\62\101\73\71\141")) and (v57.Name==v7("\158\251\206\205\172\204\232\244\140\236\195\208","\164\216\137\187"))) then v57:Destroy();end end break;end if (v47==(0 -0)) then v48=v42:FindFirstChild(v7("\242\214\251\85\192\225\221\108\252\205\233\84\216\205\233\84\192","\60\180\164\142"));if v48 then v48:Destroy();end v47=1;end end end end break;end end end local v16=v13:CreateWindow({[v7("\252\231\60\183","\107\178\134\81\210\198\158")]=v7("\34\45\142\199\189\120\54\194\238\191\58","\202\88\110\226\166"),[v7("\234\12\141\249","\170\163\111\226\151")]=304 -(244 + 60) ,[v7("\61\63\179\60\71\57\46\37\57\166\52\75","\73\113\80\210\88\46\87")]=v7("\155\15\193\19\240\193\20\141\58\242\131","\135\225\76\173\114"),[v7("\54\226\185\180\165\179\160\41\248\186\164\165\169\171\31","\199\122\141\216\208\204\221")]=v7("\175\196\80\234\91\250\172\202\80\196\125\247\160","\150\205\189\112\144\24"),[v7("\17\140\186\65\1","\112\69\228\223\44\100\232\113")]=v7("\243\13\2\214\184","\230\180\127\103\179\214\28"),[v7("\168\12\76\71\230\77\229\190\4\70\64\237\68\236\136\53\77\73\233\81\244\159","\128\236\101\63\38\132\33")]=false,[v7("\136\160\2\69\180\231\202\142\188\24\72\178\220\206\190\167\24\74\177\248","\175\204\201\113\36\214\139")]=false,[v7("\100\195\59\218\13\64\217\39\221\16\78\195\59\239\5\81\197\59\219","\100\39\172\85\188")]={[v7("\136\118\184\130\63\168\124","\83\205\24\217\224")]=true,[v7("\192\202\193\57\227\215\227\60\235\192","\93\134\165\173")]=nil,[v7("\152\251\205\199\20\207\191\123","\30\222\146\161\162\90\174\210")]=v7("\255\109\124\11\242\14\72\74\205\91\114","\106\133\46\16")},[v7("\124\41\96\255\85\82\92","\32\56\64\19\156\58")]={[v7("\127\198\228\84\86\247\132","\224\58\168\133\54\58\146")]=true,[v7("\112\88\93\244\97\131","\107\57\54\43\157\21\230\231")]=v7("\211\159\5\229\170\134\128\148\143\24\230\186\211\221\223\197\22\242\246\217\220\213\188\27\160\189\216\196\193","\175\187\235\113\149\217\188"),[v7("\14\170\140\73\238\123\125\46\133\142\69\237\106","\24\92\207\225\44\131\25")]=true},[v7("\96\214\161\127\2\110\95\214\181","\29\43\179\216\44\123")]=true,[v7("\150\220\57\127\184\205\52\69\179\222\51","\44\221\185\64")]={[v7("\53\238\92\83\118","\19\97\135\40\63")]=v7("\133\89\42\123\28\40\189\72\54\54","\81\206\60\83\91\79"),[v7("\125\190\210\102\38\215\65\161","\196\46\203\176\18\79\163\45")]=v7("\147\39\103\94\23\226\252\172\39\115","\143\216\66\30\126\68\155"),[v7("\132\199\25\206","\129\202\168\109\171\165\195\183")]=v7("\98\80\35\204\206\7\188\109\23\37\221\213\27\232\43\75\50\150\221\27\235\109\66\52\212\223\3\171\58\21\63\205\220\31\227\59\9\122\192\141\29\232\54\24","\134\66\56\87\184\190\116"),[v7("\26\56\5\190\55\234\44\48","\85\92\81\105\219\121\139\65")]=v7("\214\182\73","\191\157\211\48\37\28"),[v7("\236\30\226\25\17\218\6","\90\191\127\148\124")]=true,[v7("\95\149\47\21\83\130\55\49\106\136\35\36\113\147\43","\119\24\231\78")]=false,[v7("\169\40\188","\113\226\77\197\42\188\32")]={v7("\2\65\214\231\28\79\223\230","\213\90\118\148")}}});local v17=v16:CreateTab(v7("\125\60\161\95\89\27\26\181\84","\45\59\78\212\54"),4483362458);local v18=v17:CreateSection(v7("\54\68\150\130\146","\144\112\54\227\235\230\78\205"));v13:Notify({[v7("\135\33\27\240\213","\59\211\72\111\156\176")]=v7("\84\164\239\44\89\199\219\109\102\146\225\109\98\136\226\41\71\137\228","\77\46\231\131"),[v7("\153\91\184\84\191\90\162","\32\218\52\214")]=v7("\84\52\61\169\230\240\125\26\102\2\51\232\221\191\68\94\71\25\54","\58\46\119\81\200\145\208\37"),[v7("\15\153\34\173\189\180\57\37","\86\75\236\80\204\201\221")]=5.5 + 1 ,[v7("\91\76\118\130\251","\235\18\33\23\229\158")]=4483362934 -(41 + 435) });local v19=v17:CreateToggle({[v7("\126\187\204\190","\219\48\218\161")]=v7("\195\99\125\75\253\93\245\237\101","\128\132\17\28\41\187\47"),[v7("\34\39\20\40\88\15\38\48\59\81\20\55","\61\97\82\102\90")]=false,[v7("\138\34\170\76","\105\204\78\203\43\167\55\126")]=v7("\130\184\34\28\53\22\210\88\177","\49\197\202\67\126\115\100\167"),[v7("\20\90\211\37\130\87\93\60","\62\87\59\191\73\224\54")]=function(v28) _G.GrabFruit=v28;if _G.GrabFruit then GrabFruit();end end});local v20=v17:CreateToggle({[v7("\201\3\247\204","\169\135\98\154")]=v7("\238\100\52\114\239\38\193\223","\168\171\23\68\52\157\83"),[v7("\215\100\231\191\32\35\147\194\112\249\184\32","\231\148\17\149\205\69\77")]=false,[v7("\166\171\198\252","\159\224\199\167\155\55")]=v7("\210\224\44\244\229\230\53\198","\178\151\147\92"),[v7("\175\252\64\62\16\77\121\135","\26\236\157\44\82\114\44")]=function(v29) local v30=0;while true do if (v30==(1001 -(938 + 63))) then _G.EspFruit=v29;if _G.EspFruit then EspFruit();end break;end end end});end
+    function DisablePlayerESP()
+        for _, player in pairs(game.Players:GetPlayers()) do
+            if player ~= game.Players.LocalPlayer and player.Character then
+                local hl = player.Character:FindFirstChild("PlayerESPHighlight")
+                if hl then hl:Destroy() end
+                if player.Character:FindFirstChild("Head") then
+                    local billboard = player.Character.Head:FindFirstChild("PlayerESPText")
+                    if billboard then billboard:Destroy() end
+                end
+            end
+        end
+    end
+
+    function EspFruit()
+        while _G.EspFruit do
+            for _, fruit in ipairs(game.Workspace:GetChildren()) do
+                if fruit.Name == "Fruit" and fruit:IsA("Model") then
+                    local targetPart = fruit:FindFirstChild("Handle")
+                    if not targetPart then
+                        for _, child in ipairs(fruit:GetChildren()) do
+                            if child:IsA("BasePart") then
+                                targetPart = child
+                                break
+                            end
+                        end
+                    end
+                    if targetPart then
+                        local hl = fruit:FindFirstChild("FruitESPHighlight")
+                        if not hl then
+                            hl = Instance.new("Highlight")
+                            hl.Name = "FruitESPHighlight"
+                            hl.FillColor = Color3.new(1, 0, 0)
+                            hl.OutlineColor = Color3.new(1, 0, 0)
+                            hl.Parent = fruit
+                        end
+                        local billboard = targetPart:FindFirstChild("FruitESPText")
+                        if not billboard then
+                            billboard = Instance.new("BillboardGui")
+                            billboard.Name = "FruitESPText"
+                            billboard.Adornee = targetPart
+                            billboard.Size = UDim2.new(0, 200, 0, 50)
+                            billboard.StudsOffset = Vector3.new(0, 2, 0)
+                            billboard.AlwaysOnTop = true
+                            local textLabel = Instance.new("TextLabel")
+                            textLabel.Size = UDim2.new(1, 0, 1, 0)
+                            textLabel.BackgroundTransparency = 1
+                            textLabel.Text = "Fruit"
+                            textLabel.TextColor3 = Color3.new(1, 1, 1)
+                            textLabel.TextScaled = true
+                            textLabel.Parent = billboard
+                            billboard.Parent = targetPart
+                        end
+                    else
+                        local hl = fruit:FindFirstChild("FruitESPHighlight")
+                        if hl then hl:Destroy() end
+                        for _, obj in ipairs(fruit:GetDescendants()) do
+                            if obj:IsA("BillboardGui") and obj.Name == "FruitESPText" then
+                                obj:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+            wait(0.5)
+        end
+        for _, fruit in ipairs(game.Workspace:GetChildren()) do
+            if fruit.Name == "Fruit" and fruit:IsA("Model") then
+                local hl = fruit:FindFirstChild("FruitESPHighlight")
+                if hl then hl:Destroy() end
+                for _, obj in ipairs(fruit:GetDescendants()) do
+                    if obj:IsA("BillboardGui") and obj.Name == "FruitESPText" then
+                        obj:Destroy()
+                    end
+                end
+            end
+        end
+    end
+
+    local function FlyToFruit(targetPart)
+        local player = game.Players.LocalPlayer
+        if not (player and player.Character and player.Character:FindFirstChild("HumanoidRootPart")) then return end
+        local hrp = player.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        bodyVelocity.MaxForce = Vector3.new(5000, 5000, 5000)
+        bodyVelocity.Parent = hrp
+        local speed = 150
+        local threshold = 3
+        local connection
+        connection = RunService.RenderStepped:Connect(function()
+            if not _G.GrabFruit or not targetPart or not targetPart.Parent or not game.Workspace:FindFirstChild(targetPart.Parent.Name) then
+                bodyVelocity:Destroy()
+                connection:Disconnect()
+                return
+            end
+            local direction = (targetPart.Position - hrp.Position)
+            local distance = direction.Magnitude
+            if distance < threshold then
+                bodyVelocity:Destroy()
+                connection:Disconnect()
+                return
+            end
+            direction = direction.Unit
+            bodyVelocity.Velocity = direction * speed
+        end)
+    end
+
+    function GrabFruit()
+        while _G.GrabFruit do
+            wait(0.1)
+            local fruitModel = game.Workspace:FindFirstChild("Fruit")
+            if fruitModel then
+                local targetPart = fruitModel:FindFirstChild("Handle")
+                if not targetPart then
+                    for _, child in ipairs(fruitModel:GetChildren()) do
+                        if child:IsA("BasePart") then
+                            targetPart = child
+                            break
+                        end
+                    end
+                end
+                if targetPart then
+                    FlyToFruit(targetPart)
+                end
+            end
+        end
+    end
+
+    local function FlyToChest(targetPart, chest)
+        local player = game.Players.LocalPlayer
+        if not (player and player.Character and player.Character:FindFirstChild("HumanoidRootPart")) then return end
+        local hrp = player.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        bodyVelocity.MaxForce = Vector3.new(5000, 5000, 5000)
+        bodyVelocity.Parent = hrp
+        local speed = 150
+        local threshold = 3
+        local connection
+        connection = RunService.RenderStepped:Connect(function()
+            if not _G.AutoFarmChest or not targetPart or not targetPart.Parent or not chest or not chest.Parent then
+                bodyVelocity:Destroy()
+                connection:Disconnect()
+                return
+            end
+            local direction = (targetPart.Position - hrp.Position)
+            local distance = direction.Magnitude
+            if distance < threshold then
+                bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+                bodyVelocity:Destroy()
+                connection:Disconnect()
+                hrp.CFrame = CFrame.new(targetPart.Position)
+                wait(0.3)
+                if chest and chest.Parent then
+                    chest:Destroy()
+                end
+            else
+                direction = direction.Unit
+                bodyVelocity.Velocity = direction * speed
+            end
+        end)
+    end
+
+    function AutoFarmChest()
+        while _G.AutoFarmChest do
+            local chestFolder = game.Workspace:FindFirstChild("ChestModels")
+            if chestFolder then
+                local validChests = {}
+                for _, chest in ipairs(chestFolder:GetChildren()) do
+                    if chest:IsA("Model") and (chest.Name == "DiamondChest" or chest.Name == "GoldChest" or chest.Name == "SilverChest") then
+                        table.insert(validChests, chest)
+                    end
+                end
+                if #validChests > 0 then
+                    local chosenChest = validChests[math.random(1, #validChests)]
+                    if chosenChest then
+                        local targetPart = chosenChest:FindFirstChild("RootPart")
+                        if not targetPart then
+                            for _, child in ipairs(chosenChest:GetChildren()) do
+                                if child:IsA("BasePart") then
+                                    targetPart = child
+                                    break
+                                end
+                            end
+                        end
+                        if targetPart then
+                            FlyToChest(targetPart, chosenChest)
+                            repeat wait(0.1) until not chosenChest.Parent
+                        end
+                    end
+                end
+            end
+            wait(0.1)
+        end
+    end
+
+    local aimlockEnabled = false
+    local aimlockGui = nil
+    local aimlockConnection = nil
+
+    function SetAimlock(state)
+        local player = game.Players.LocalPlayer
+        local camera = game.Workspace.CurrentCamera
+        if state == true and not aimlockEnabled then
+            aimlockEnabled = true
+            aimlockGui = Instance.new("ScreenGui")
+            aimlockGui.Name = "AimlockGui"
+            aimlockGui.Parent = player:WaitForChild("PlayerGui")
+            local textButton = Instance.new("TextButton", aimlockGui)
+            textButton.Size = UDim2.new(0, 200, 0, 50)
+            textButton.Position = UDim2.new(0.5, -100, 0, 50)
+            textButton.Text = "Desativar Seguimento"
+            textButton.MouseButton1Click:Connect(function()
+                SetAimlock(false)
+            end)
+            local function findClosestPlayer()
+                local closestPlayer = nil
+                local shortestDistance = math.huge
+                if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then return nil end
+                for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+                    if otherPlayer ~= player and otherPlayer.Character then
+                        local hrp = otherPlayer.Character:FindFirstChild("HumanoidRootPart")
+                        if hrp then
+                            local distance = (player.Character.HumanoidRootPart.Position - hrp.Position).Magnitude
+                            if distance < shortestDistance then
+                                shortestDistance = distance
+                                closestPlayer = otherPlayer
+                            end
+                        end
+                    end
+                end
+                return closestPlayer
+            end
+            aimlockConnection = RunService.Heartbeat:Connect(function()
+                if aimlockEnabled then
+                    local targetPlayer = findClosestPlayer()
+                    if targetPlayer and targetPlayer.Character then
+                        local hrp = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+                        if hrp then
+                            camera.CFrame = CFrame.new(camera.CFrame.Position, hrp.Position)
+                        end
+                    end
+                end
+            end)
+        elseif state == false and aimlockEnabled then
+            aimlockEnabled = false
+            if aimlockGui then
+                aimlockGui:Destroy()
+                aimlockGui = nil
+            end
+            if aimlockConnection then
+                aimlockConnection:Disconnect()
+                aimlockConnection = nil
+            end
+        end
+    end
+
+    local MainWindow = Rayfield:CreateWindow({
+        Name = "zClaw X Hub",
+        Icon = 0,
+        LoadingTitle = "zClaw X Hub",
+        LoadingSubtitle = "by zClaw Team",
+        Theme = "Green",
+        DisableRayfieldPrompts = false,
+        DisableBuildWarnings = false,
+        ConfigurationSaving = {
+            Enabled = true,
+            FolderName = nil,
+            FileName = "zClaw X Hub"
+        },
+        Discord = {
+            Enabled = true,
+            Invite = "https://discord.gg/esnWj5ddkz",
+            RememberJoins = true
+        },
+        KeySystem = true,
+        KeySettings = {
+            Title = "Key System",
+            Subtitle = "Key System",
+            Note = " https://rekonise.com/zclaw-x-hubkey1-x3int ",
+            FileName = "Key",
+            SaveKey = true,
+            GrabKeyFromSite = true,
+            Key = {"X7B2F9K3"}
+        }
+    })
+
+    local FruitTab = MainWindow:CreateTab("Fruit", 4483362458)
+    local FruitSection = FruitTab:CreateSection("Fruit")
+    local AutoFarmTab = MainWindow:CreateTab("AutoFarm", 4483362458)
+    local AutoFarmSection = AutoFarmTab:CreateSection("AutoFarm")
+    local PvPTab = MainWindow:CreateTab("PvP", 4483362458)
+    local PvPSection = PvPTab:CreateSection("PvP")
+    local EspTab = MainWindow:CreateTab("Esp", 4483362458)
+    local EspSection = EspTab:CreateSection("Esp")
+    local TeleportTab = MainWindow:CreateTab("Teleport", 4483362458)
+    local TeleportSection = TeleportTab:CreateSection("Teleports Seas")
+
+    Rayfield:Notify({
+        Title = "zClaw X Hub Loading",
+        Content = "zClaw X Hub by zClaw Team",
+        Duration = 6.5,
+        Image = 4483362458,
+    })
+
+    local EspPlayerToggle = EspTab:CreateToggle({
+        Name = "EspPlayer",
+        CurrentValue = false,
+        Flag = "EspPlayer",
+        Callback = function(Value)
+            _G.EspPlayer = Value
+            if _G.EspPlayer then
+                EnablePlayerESP()
+            else
+                DisablePlayerESP()
+            end
+        end,
+    })
+
+    local EspFruitToggle = EspTab:CreateToggle({
+        Name = "EspFruit",
+        CurrentValue = false,
+        Flag = "EspFruit",
+        Callback = function(Value)
+            _G.EspFruit = Value
+            if _G.EspFruit then
+                EspFruit()
+            end
+        end,
+    })
+
+    local GrabFruitToggle = FruitSection:CreateToggle({
+        Name = "GrabFruit",
+        CurrentValue = false,
+        Flag = "GrabFruit",
+        Callback = function(Value)
+            _G.GrabFruit = Value
+            if _G.GrabFruit then
+                GrabFruit()
+            end
+        end,
+    })
+
+    local AutoFarmChestToggle = AutoFarmSection:CreateToggle({
+        Name = "AutoFarm Chest",
+        CurrentValue = false,
+        Flag = "AutoFarmChest",
+        Callback = function(Value)
+            _G.AutoFarmChest = Value
+            if _G.AutoFarmChest then
+                AutoFarmChest()
+            end
+        end,
+    })
+
+    local AimlockToggle = PvPTab:CreateToggle({
+        Name = "Aimlock",
+        CurrentValue = false,
+        Flag = "Aimlock",
+        Callback = function(Value)
+            SetAimlock(Value)
+        end,
+    })
+
+    local Sea1Button = TeleportSection:CreateButton({
+        Name = "Sea1",
+        Callback = function()
+            TeleportService:Teleport(2753915549, game.Players.LocalPlayer)
+        end,
+    })
+
+    local Sea2Button = TeleportSection:CreateButton({
+        Name = "Sea2",
+        Callback = function()
+            TeleportService:Teleport(4442272183, game.Players.LocalPlayer)
+        end,
+    })
+
+    local Sea3Button = TeleportSection:CreateButton({
+        Name = "Sea3",
+        Callback = function()
+            TeleportService:Teleport(7449423635, game.Players.LocalPlayer)
+        end,
+    })
+end
