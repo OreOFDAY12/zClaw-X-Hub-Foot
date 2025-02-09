@@ -158,8 +158,7 @@ if table.find(SeaIDs, game.PlaceId) then
         bodyVelocity.Parent = hrp
         local speed = 150
         local threshold = 3
-        local connection
-        connection = RunService.RenderStepped:Connect(function()
+        local connection = RunService.RenderStepped:Connect(function()
             if not _G.GrabFruit or not targetPart or not targetPart.Parent or not game.Workspace:FindFirstChild(targetPart.Parent.Name) then
                 bodyVelocity:Destroy()
                 connection:Disconnect()
@@ -172,8 +171,7 @@ if table.find(SeaIDs, game.PlaceId) then
                 connection:Disconnect()
                 return
             end
-            direction = direction.Unit
-            bodyVelocity.Velocity = direction * speed
+            bodyVelocity.Velocity = direction.Unit * speed
         end)
     end
 
@@ -207,8 +205,7 @@ if table.find(SeaIDs, game.PlaceId) then
         bodyVelocity.Parent = hrp
         local speed = 150
         local threshold = 3
-        local connection
-        connection = RunService.RenderStepped:Connect(function()
+        local connection = RunService.RenderStepped:Connect(function()
             if not _G.AutoFarmChest or not targetPart or not targetPart.Parent or not chest or not chest.Parent then
                 bodyVelocity:Destroy()
                 connection:Disconnect()
@@ -226,8 +223,7 @@ if table.find(SeaIDs, game.PlaceId) then
                     chest:Destroy()
                 end
             else
-                direction = direction.Unit
-                bodyVelocity.Velocity = direction * speed
+                bodyVelocity.Velocity = direction.Unit * speed
             end
         end)
     end
@@ -265,64 +261,64 @@ if table.find(SeaIDs, game.PlaceId) then
         end
     end
 
-    local aimlockEnabled = false
-    local aimlockGui = nil
+    function Sea1()
+        TeleportService:Teleport(2753915549, game.Players.LocalPlayer)
+    end
+
+    function Sea2()
+        TeleportService:Teleport(4442272183, game.Players.LocalPlayer)
+    end
+
+    function Sea3()
+        TeleportService:Teleport(7449423635, game.Players.LocalPlayer)
+    end
+
+    local isFollowing = false
     local aimlockConnection = nil
+    local function findClosestPlayer()
+        local player = game.Players.LocalPlayer
+        local closestPlayer = nil
+        local shortestDistance = math.huge
+        if not (player.Character and player.Character:FindFirstChild("HumanoidRootPart")) then return nil end
+        for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+            if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local distance = (player.Character.HumanoidRootPart.Position - otherPlayer.Character.HumanoidRootPart.Position).Magnitude
+                if distance < shortestDistance then
+                    shortestDistance = distance
+                    closestPlayer = otherPlayer
+                end
+            end
+        end
+        return closestPlayer
+    end
+
+    local function StartAimlock()
+        isFollowing = true
+        aimlockConnection = RunService.Heartbeat:Connect(function()
+            local player = game.Players.LocalPlayer
+            local camera = game.Workspace.CurrentCamera
+            if isFollowing and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local targetPlayer = findClosestPlayer()
+                if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    camera.CFrame = CFrame.new(camera.CFrame.Position, targetPlayer.Character.HumanoidRootPart.Position)
+                end
+            end
+        end)
+    end
+
+    local function StopAimlock()
+        isFollowing = false
+        if aimlockConnection then
+            aimlockConnection:Disconnect()
+            aimlockConnection = nil
+        end
+    end
 
     function SetAimlock(state)
-        local player = game.Players.LocalPlayer
-        local camera = game.Workspace.CurrentCamera
-        if state == true and not aimlockEnabled then
-            aimlockEnabled = true
-            aimlockGui = Instance.new("ScreenGui")
-            aimlockGui.Name = "AimlockGui"
-            aimlockGui.Parent = player:WaitForChild("PlayerGui")
-            local textButton = Instance.new("TextButton", aimlockGui)
-            textButton.Size = UDim2.new(0, 200, 0, 50)
-            textButton.Position = UDim2.new(0.5, -100, 0, 50)
-            textButton.Text = "Desativar Seguimento"
-            textButton.MouseButton1Click:Connect(function()
-                SetAimlock(false)
-            end)
-            local function findClosestPlayer()
-                local closestPlayer = nil
-                local shortestDistance = math.huge
-                if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then return nil end
-                for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-                    if otherPlayer ~= player and otherPlayer.Character then
-                        local hrp = otherPlayer.Character:FindFirstChild("HumanoidRootPart")
-                        if hrp then
-                            local distance = (player.Character.HumanoidRootPart.Position - hrp.Position).Magnitude
-                            if distance < shortestDistance then
-                                shortestDistance = distance
-                                closestPlayer = otherPlayer
-                            end
-                        end
-                    end
-                end
-                return closestPlayer
-            end
-            aimlockConnection = RunService.Heartbeat:Connect(function()
-                if aimlockEnabled then
-                    local targetPlayer = findClosestPlayer()
-                    if targetPlayer and targetPlayer.Character then
-                        local hrp = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
-                        if hrp then
-                            camera.CFrame = CFrame.new(camera.CFrame.Position, hrp.Position)
-                        end
-                    end
-                end
-            end)
-        elseif state == false and aimlockEnabled then
-            aimlockEnabled = false
-            if aimlockGui then
-                aimlockGui:Destroy()
-                aimlockGui = nil
-            end
-            if aimlockConnection then
-                aimlockConnection:Disconnect()
-                aimlockConnection = nil
-            end
+        if state then
+            StartAimlock()
+        else
+            StopAimlock()
         end
     end
 
@@ -356,22 +352,51 @@ if table.find(SeaIDs, game.PlaceId) then
         }
     })
 
+    -- Create tabs directly, without sections
     local FruitTab = MainWindow:CreateTab("Fruit", 4483362458)
-    local FruitSection = FruitTab:CreateSection("Fruit")
     local AutoFarmTab = MainWindow:CreateTab("AutoFarm", 4483362458)
-    local AutoFarmSection = AutoFarmTab:CreateSection("AutoFarm")
     local PvPTab = MainWindow:CreateTab("PvP", 4483362458)
-    local PvPSection = PvPTab:CreateSection("PvP")
     local EspTab = MainWindow:CreateTab("Esp", 4483362458)
-    local EspSection = EspTab:CreateSection("Esp")
     local TeleportTab = MainWindow:CreateTab("Teleport", 4483362458)
-    local TeleportSection = TeleportTab:CreateSection("Teleports Seas")
 
     Rayfield:Notify({
         Title = "zClaw X Hub Loading",
         Content = "zClaw X Hub by zClaw Team",
         Duration = 6.5,
         Image = 4483362458,
+    })
+
+    local GrabFruitToggle = FruitTab:CreateToggle({
+        Name = "GrabFruit",
+        CurrentValue = false,
+        Flag = "GrabFruit",
+        Callback = function(Value)
+            _G.GrabFruit = Value
+            if _G.GrabFruit then
+                GrabFruit()
+            end
+        end,
+    })
+
+    local AutoFarmChestToggle = AutoFarmTab:CreateToggle({
+        Name = "AutoFarm Chest",
+        CurrentValue = false,
+        Flag = "AutoFarmChest",
+        Callback = function(Value)
+            _G.AutoFarmChest = Value
+            if _G.AutoFarmChest then
+                AutoFarmChest()
+            end
+        end,
+    })
+
+    local AimlockToggle = PvPTab:CreateToggle({
+        Name = "Aimlock",
+        CurrentValue = false,
+        Flag = "Aimlock",
+        Callback = function(Value)
+            SetAimlock(Value)
+        end,
     })
 
     local EspPlayerToggle = EspTab:CreateToggle({
@@ -400,57 +425,24 @@ if table.find(SeaIDs, game.PlaceId) then
         end,
     })
 
-    local GrabFruitToggle = FruitSection:CreateToggle({
-        Name = "GrabFruit",
-        CurrentValue = false,
-        Flag = "GrabFruit",
-        Callback = function(Value)
-            _G.GrabFruit = Value
-            if _G.GrabFruit then
-                GrabFruit()
-            end
-        end,
-    })
-
-    local AutoFarmChestToggle = AutoFarmSection:CreateToggle({
-        Name = "AutoFarm Chest",
-        CurrentValue = false,
-        Flag = "AutoFarmChest",
-        Callback = function(Value)
-            _G.AutoFarmChest = Value
-            if _G.AutoFarmChest then
-                AutoFarmChest()
-            end
-        end,
-    })
-
-    local AimlockToggle = PvPTab:CreateToggle({
-        Name = "Aimlock",
-        CurrentValue = false,
-        Flag = "Aimlock",
-        Callback = function(Value)
-            SetAimlock(Value)
-        end,
-    })
-
-    local Sea1Button = TeleportSection:CreateButton({
-        Name = "Sea1",
+    local Sea1Button = TeleportTab:CreateButton({
+        Name = "Sea 1 Teleport",
         Callback = function()
-            TeleportService:Teleport(2753915549, game.Players.LocalPlayer)
+            Sea1()
         end,
     })
 
-    local Sea2Button = TeleportSection:CreateButton({
-        Name = "Sea2",
+    local Sea2Button = TeleportTab:CreateButton({
+        Name = "Sea 2 Teleport",
         Callback = function()
-            TeleportService:Teleport(4442272183, game.Players.LocalPlayer)
+            Sea2()
         end,
     })
 
-    local Sea3Button = TeleportSection:CreateButton({
-        Name = "Sea3",
+    local Sea3Button = TeleportTab:CreateButton({
+        Name = "Sea 3 Teleport",
         Callback = function()
-            TeleportService:Teleport(7449423635, game.Players.LocalPlayer)
+            Sea3()
         end,
     })
 end
