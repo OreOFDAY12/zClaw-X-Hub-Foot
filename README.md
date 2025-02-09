@@ -9,6 +9,20 @@ if table.find(SeaIDs, game.PlaceId) then
     _G.EspPlayer = false
     _G.AutoFarmChest = false
 
+    -- Função auxiliar de Tween (a velocidade foi aumentada de 50 para 120)
+    local function TweenToTarget(targetCFrame)
+        local player = game.Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local hrp = character:WaitForChild("HumanoidRootPart")
+        local Speed = 120 -- velocidade aumentada
+        local distance = (targetCFrame.Position - hrp.Position).Magnitude
+        local flightTime = distance / Speed
+        local tweenInfo = TweenInfo.new(flightTime, Enum.EasingStyle.Linear)
+        local tween = TweenService:Create(hrp, tweenInfo, {CFrame = targetCFrame + Vector3.new(0, 5, 0)})
+        tween:Play()
+        tween.Completed:Wait()
+    end
+
     function EnablePlayerESP()
         for _, player in pairs(game.Players:GetPlayers()) do
             if player ~= game.Players.LocalPlayer then
@@ -149,30 +163,9 @@ if table.find(SeaIDs, game.PlaceId) then
         end
     end
 
+    -- Função para voar até o fruto (utilizando Tween)
     local function FlyToFruit(targetPart)
-        local player = game.Players.LocalPlayer
-        if not (player and player.Character and player.Character:FindFirstChild("HumanoidRootPart")) then return end
-        local hrp = player.Character.HumanoidRootPart
-        local bodyVelocity = Instance.new("BodyVelocity")
-        bodyVelocity.MaxForce = Vector3.new(5000, 5000, 5000)
-        bodyVelocity.Parent = hrp
-        local speed = 150
-        local threshold = 3
-        local connection = RunService.RenderStepped:Connect(function()
-            if not _G.GrabFruit or not targetPart or not targetPart.Parent or not game.Workspace:FindFirstChild(targetPart.Parent.Name) then
-                bodyVelocity:Destroy()
-                connection:Disconnect()
-                return
-            end
-            local direction = (targetPart.Position - hrp.Position)
-            local distance = direction.Magnitude
-            if distance < threshold then
-                bodyVelocity:Destroy()
-                connection:Disconnect()
-                return
-            end
-            bodyVelocity.Velocity = direction.Unit * speed
-        end)
+        TweenToTarget(targetPart.CFrame)
     end
 
     function GrabFruit()
@@ -196,36 +189,13 @@ if table.find(SeaIDs, game.PlaceId) then
         end
     end
 
+    -- Função para voar até o baú (utilizando Tween)
     local function FlyToChest(targetPart, chest)
-        local player = game.Players.LocalPlayer
-        if not (player and player.Character and player.Character:FindFirstChild("HumanoidRootPart")) then return end
-        local hrp = player.Character.HumanoidRootPart
-        local bodyVelocity = Instance.new("BodyVelocity")
-        bodyVelocity.MaxForce = Vector3.new(5000, 5000, 5000)
-        bodyVelocity.Parent = hrp
-        local speed = 150
-        local threshold = 3
-        local connection = RunService.RenderStepped:Connect(function()
-            if not _G.AutoFarmChest or not targetPart or not targetPart.Parent or not chest or not chest.Parent then
-                bodyVelocity:Destroy()
-                connection:Disconnect()
-                return
-            end
-            local direction = (targetPart.Position - hrp.Position)
-            local distance = direction.Magnitude
-            if distance < threshold then
-                bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-                bodyVelocity:Destroy()
-                connection:Disconnect()
-                hrp.CFrame = CFrame.new(targetPart.Position)
-                wait(0.3)
-                if chest and chest.Parent then
-                    chest:Destroy()
-                end
-            else
-                bodyVelocity.Velocity = direction.Unit * speed
-            end
-        end)
+        TweenToTarget(targetPart.CFrame)
+        wait(0.3)
+        if chest and chest.Parent then
+            chest:Destroy()
+        end
     end
 
     function AutoFarmChest()
@@ -352,12 +322,14 @@ if table.find(SeaIDs, game.PlaceId) then
         }
     })
 
-    -- Create tabs directly, without sections
+    -- Criação das abas
     local FruitTab = MainWindow:CreateTab("Fruit", 4483362458)
     local AutoFarmTab = MainWindow:CreateTab("AutoFarm", 4483362458)
     local PvPTab = MainWindow:CreateTab("PvP", 4483362458)
     local EspTab = MainWindow:CreateTab("Esp", 4483362458)
     local TeleportTab = MainWindow:CreateTab("Teleport", 4483362458)
+    local PlayerTab = MainWindow:CreateTab("Player", 4483362458)
+    local PlayerSection = PlayerTab:CreateSection("Player")
 
     Rayfield:Notify({
         Title = "zClaw X Hub Loading",
@@ -443,6 +415,37 @@ if table.find(SeaIDs, game.PlaceId) then
         Name = "Sea 3 Teleport",
         Callback = function()
             Sea3()
+        end,
+    })
+
+    -- Controles de WalkSpeed no Player Tab
+    local WalkSpeedSlider = PlayerTab:CreateSlider({
+        Name = "WalkSpeed",
+        Range = {0, 500},
+        Increment = 10,
+        Suffix = " WalkSpeed",
+        CurrentValue = 16,
+        Flag = "WalkSpeed",
+        Callback = function(Value)
+            local player = game.Players.LocalPlayer
+            if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                player.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = Value
+            end
+        end,
+    })
+
+    local WalkSpeedApplyButton = PlayerTab:CreateButton({
+        Name = "Apply WalkSpeed",
+        Callback = function()
+            local player = game.Players.LocalPlayer
+            local movementPath = workspace:WaitForChild("Characters"):WaitForChild(player.Name):FindFirstChild("Movement + Swim")
+            if movementPath then
+                movementPath:Destroy() 
+            end
+
+            if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
+                player.Character:FindFirstChildOfClass("Humanoid").WalkSpeed = WalkSpeedSlider.CurrentValue
+            end
         end,
     })
 end
